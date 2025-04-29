@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Background Remover</title>
+  <style>
+    /* Global Style */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      overflow: hidden;
+    }
+
+    /* Container */
+    .container {
+      background: #ffffff;
+      padding: 50px 40px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      animation: fadeIn 1.5s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Heading */
+    h1 {
+      margin-bottom: 30px;
+      color: #222;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      animation: slideInFromTop 1s ease-out;
+    }
+
+    /* File Upload */
+    input[type="file"] {
+      margin: 20px 0;
+      padding: 12px;
+      border: 2px dashed #aaa;
+      border-radius: 10px;
+      width: 100%;
+      cursor: pointer;
+      background-color: #fafafa;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      font-size: 14px;
+    }
+
+    input[type="file"]:hover {
+      background-color: #f0f0f0;
+      border-color: #2575fc;
+    }
+
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #6a11cb;
+    }
+
+    /* Button */
+    button {
+      background-color: #2575fc;
+      color: white;
+      padding: 10px 30px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out, transform 0.2s ease-out;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #6a11cb;
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* Result Section */
+    .result {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .result h2 {
+      color: #444;
+      margin-bottom: 15px;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .result img {
+      max-width: 40%; /* Limit image width to 80% of its container */
+      height: auto;
+      border-radius: 1px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    }
+
+    .result img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Download Link */
+    .result a {
+      display: inline-block;
+      width: 0%;
+      height: 20%;
+      padding: 20px 20px;
+      margin-top: 25px;
+      text-decoration: none;
+      color: #2575fc;
+      font-weight: bold;
+      transition: color 0.3s ease-in-out, transform 0.2s ease-out;
+    }
+
+    .result a:hover {
+      color: #6a11cb;
+      transform: translateY(-3px);
+    }
+
+    /* Keyframes for Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideInFromTop {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      input[type="file"] {
+        font-size: 12px;
+      }
+
+      button {
+        padding: 10px 25px;
+        font-size: 14px;
+      }
+
+      .result h2 {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        background: linear-gradient(135deg, #6a11cb 20%, #2575fc 80%);
+      }
+
+      .container {
+        padding: 20px;
+        width: 90%;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      input[type="file"] {
+        font-size: 10px;
+      }
+
+      button {
+        padding: 8px 20px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Photo Background Remover</h1>
+    <form action="/remove-background" method="POST" enctype="multipart/form-data">
+      <input type="file" name="image" accept="image/*" required>
+      <button type="submit">Remove Background</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+      <h2>Result:</h2>
+      <img src="{{ result }}" alt="Output Image">
+      <a href="{{ result }}" download>Download Image</a>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
